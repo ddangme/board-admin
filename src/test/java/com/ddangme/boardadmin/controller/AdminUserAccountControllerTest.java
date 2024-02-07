@@ -1,6 +1,6 @@
 package com.ddangme.boardadmin.controller;
 
-import org.apache.catalina.security.SecurityConfig;
+import com.ddangme.boardadmin.config.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class AdminUserAccountControllerTest {
 
     @DisplayName("[view][GET] 어드민 회원 페이지 - 정상 호출")
     @Test
-    void givenNothing_whenRequestingMembersView_thenReturnsAdminMembersView() throws Exception {
+    void givenNothing_whenRequestingAdminMembersView_thenReturnsAdminMembersView() throws Exception {
         // Given
 
         // When & Then
@@ -34,4 +34,5 @@ class AdminUserAccountControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("admin/members"));
     }
+
 }
