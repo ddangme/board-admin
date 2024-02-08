@@ -9,6 +9,10 @@ logging:
     org.springframework.web.client.RestTemplate: debug
 
 
+server:
+  port: 8081
+
+
 spring:
   devtools:
     livereload:
@@ -44,8 +48,9 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-server:
-  port: 8081
+project:
+  board:
+    url: http://localhost:8080
 
 ---
 
