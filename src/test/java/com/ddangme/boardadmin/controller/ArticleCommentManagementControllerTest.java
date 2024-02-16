@@ -1,7 +1,6 @@
 package com.ddangme.boardadmin.controller;
 
-import com.ddangme.boardadmin.config.SecurityConfig;
-import com.ddangme.boardadmin.domain.constant.RoleType;
+import com.ddangme.boardadmin.config.TestSecurityConfig;
 import com.ddangme.boardadmin.dto.ArticleCommentDto;
 import com.ddangme.boardadmin.dto.UserAccountDto;
 import com.ddangme.boardadmin.service.ArticleCommentManagementService;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -25,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("컨트롤러 - 댓글 관리")
-@Import(SecurityConfig.class)
+@Import(TestSecurityConfig.class)
 @WebMvcTest(ArticleCommentManagementController.class)
 class ArticleCommentManagementControllerTest {
 
@@ -106,7 +104,6 @@ class ArticleCommentManagementControllerTest {
     private UserAccountDto createUserAccountDto() {
         return UserAccountDto.of(
                 "unoTest",
-                Set.of(RoleType.ADMIN),
                 "uno-test@email.com",
                 "uno-test",
                 "test memo"
