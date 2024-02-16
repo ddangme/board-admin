@@ -8,14 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @RequestMapping("/admin/members")
 @Controller
 public class AdminAccountController {
 
     @GetMapping
-    public String members(
-            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, Model model
-    ) {
+    public String members(Model model) {
         return "admin/members";
     }
+
 }
