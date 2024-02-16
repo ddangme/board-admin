@@ -1,5 +1,6 @@
 package com.ddangme.boardadmin.dto.response;
 
+
 import com.ddangme.boardadmin.domain.constant.RoleType;
 import com.ddangme.boardadmin.dto.AdminAccountDto;
 
@@ -13,15 +14,10 @@ public record AdminAccountResponse(
         String nickname,
         String memo,
         LocalDateTime createdAt,
-        String createdBy) {
+        String createdBy
+) {
 
-    public static AdminAccountResponse of(String userId,
-                                          String roleTypes,
-                                          String email,
-                                          String nickname,
-                                          String memo,
-                                          LocalDateTime createdAt,
-                                          String createdBy) {
+    public static AdminAccountResponse of(String userId, String roleTypes, String email, String nickname, String memo, LocalDateTime createdAt, String createdBy) {
         return new AdminAccountResponse(userId, roleTypes, email, nickname, memo, createdAt, createdBy);
     }
 
@@ -38,4 +34,5 @@ public record AdminAccountResponse(
                 dto.createdBy()
         );
     }
+
 }
