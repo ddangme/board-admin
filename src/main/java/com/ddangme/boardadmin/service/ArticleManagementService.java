@@ -20,9 +20,10 @@ public class ArticleManagementService {
     private final RestTemplate restTemplate;
     private final ProjectProperties projectProperties;
 
+
     public List<ArticleDto> getArticles() {
         URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.board().url() + "/api/articles")
-                .queryParam("size", 10000) //  TODO: 전체 게시글을 가져오기 위해 충분히 큰 사이즈를 전달하는 방식. 불완전하다.
+                .queryParam("size", 10000) // TODO: 전체 게시글을 가져오기 위해 충분히 큰 사이즈를 전달하는 방식. 불완전하다.
                 .build()
                 .toUri();
         ArticleClientResponse response = restTemplate.getForObject(uri, ArticleClientResponse.class);
@@ -31,7 +32,7 @@ public class ArticleManagementService {
     }
 
     public ArticleDto getArticle(Long articleId) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.board().url() + ".api/articles/" + articleId)
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.board().url() + "/api/articles/" + articleId)
                 .queryParam("projection", "withUserAccount")
                 .build()
                 .toUri();
@@ -47,4 +48,5 @@ public class ArticleManagementService {
                 .toUri();
         restTemplate.delete(uri);
     }
+
 }

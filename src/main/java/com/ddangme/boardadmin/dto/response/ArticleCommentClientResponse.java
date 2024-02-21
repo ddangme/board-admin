@@ -2,6 +2,7 @@ package com.ddangme.boardadmin.dto.response;
 
 import com.ddangme.boardadmin.dto.ArticleCommentDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public record ArticleCommentClientResponse(
@@ -33,4 +34,5 @@ public record ArticleCommentClientResponse(
             int totalPages,
             int number
     ) {}
+
 }
