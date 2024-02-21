@@ -1,12 +1,9 @@
 package com.ddangme.boardadmin.service;
 
-
 import com.ddangme.boardadmin.dto.UserAccountDto;
 import com.ddangme.boardadmin.dto.properties.ProjectProperties;
 import com.ddangme.boardadmin.dto.response.UserAccountClientResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,22 +19,22 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.util.List;
-import java.util.Properties;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ActiveProfiles("test")
 @DisplayName("비즈니스 로직 - 회원 관리")
-public class UserAccountManagementServiceTest {
+class UserAccountManagementServiceTest {
 
     @Disabled("실제 API 호출 결과 관찰용이므로 평상시엔 비활성화")
     @DisplayName("실제 API 호출 테스트")
     @SpringBootTest
     @Nested
     class RealApiTest {
+
         private final UserAccountManagementService sut;
 
         @Autowired
@@ -45,7 +42,7 @@ public class UserAccountManagementServiceTest {
             this.sut = sut;
         }
 
-        @DisplayName("회원 API를 호출하면, 회원 정보를 가져온다.")
+        @DisplayName("회원 API을 호출하면, 회원 정보를 가져온다.")
         @Test
         void givenNothing_whenCallingUserAccountApi_thenReturnsUserAccountList() {
             // Arrange
@@ -59,8 +56,9 @@ public class UserAccountManagementServiceTest {
         }
     }
 
+
     @DisplayName("API mocking 테스트")
-    @EnableConfigurationProperties(Properties.class)
+    @EnableConfigurationProperties(ProjectProperties.class)
     @AutoConfigureWebClient(registerRestTemplate = true)
     @RestClientTest(UserAccountManagementService.class)
     @Nested
@@ -72,24 +70,32 @@ public class UserAccountManagementServiceTest {
         private final ObjectMapper mapper;
 
         @Autowired
-        public RestTemplateTest(UserAccountManagementService sut, ProjectProperties projectProperties, MockRestServiceServer server, ObjectMapper mapper) {
+        public RestTemplateTest(
+                UserAccountManagementService sut,
+                ProjectProperties projectProperties,
+                MockRestServiceServer server,
+                ObjectMapper mapper
+
+        ) {
             this.sut = sut;
             this.projectProperties = projectProperties;
             this.server = server;
             this.mapper = mapper;
         }
 
-        @DisplayName("회원 목록 API를 호출하면, 회원들을 가져온다.")
+        @DisplayName("회원 목록 API을 호출하면, 회원들을 가져온다.")
         @Test
         void givenNothing_whenCallingUserAccountsApi_thenReturnsUserAccountList() throws Exception {
             // Given
             UserAccountDto expectedUserAccount = createUserAccountDto("uno", "Uno");
             UserAccountClientResponse expectedResponse = UserAccountClientResponse.of(List.of(expectedUserAccount));
-            server.expect(requestTo(projectProperties.board().url() + "/api/userAccounts?size=10000"))
+            server
+                    .expect(requestTo(projectProperties.board().url() + "/api/userAccounts?size=10000"))
                     .andRespond(withSuccess(
                             mapper.writeValueAsString(expectedResponse),
                             MediaType.APPLICATION_JSON
                     ));
+
 
             // When
             List<UserAccountDto> result = sut.getUserAccounts();
@@ -101,7 +107,7 @@ public class UserAccountManagementServiceTest {
             server.verify();
         }
 
-        @DisplayName("회원 ID와 함께 회원 API를 호출하면, 회원을 가져온다.")
+        @DisplayName("회원 ID와 함께 회원 API을 호출하면, 회원을 가져온다.")
         @Test
         void givenUserAccountId_whenCallingUserAccountApi_thenReturnsUserAccount() throws Exception {
             // Given
@@ -111,7 +117,9 @@ public class UserAccountManagementServiceTest {
                     .expect(requestTo(projectProperties.board().url() + "/api/userAccounts/" + userId))
                     .andRespond(withSuccess(
                             mapper.writeValueAsString(expectedUserAccount),
-                            MediaType.APPLICATION_JSON));
+                            MediaType.APPLICATION_JSON
+                    ));
+
 
             // When
             UserAccountDto result = sut.getUserAccount(userId);
@@ -123,12 +131,13 @@ public class UserAccountManagementServiceTest {
             server.verify();
         }
 
-        @DisplayName("회원 ID와 함께 회원 삭제 API를 호출하면, 회원을 삭제한다.")
+        @DisplayName("회원 ID와 함께 회원 삭제 API을 호출하면, 회원을 삭제한다.")
         @Test
         void givenUserAccountId_whenCallingDeleteUserAccountApi_thenDeletesUserAccount() throws Exception {
             // Given
             String userId = "uno";
-            server.expect(requestTo(projectProperties.board().url() + "/api/userAccounts/" + userId))
+            server
+                    .expect(requestTo(projectProperties.board().url() + "/api/userAccounts/" + userId))
                     .andExpect(method(HttpMethod.DELETE))
                     .andRespond(withSuccess());
 
@@ -138,7 +147,6 @@ public class UserAccountManagementServiceTest {
             // Then
             server.verify();
         }
-
     }
 
 
@@ -150,4 +158,5 @@ public class UserAccountManagementServiceTest {
                 "test memo"
         );
     }
+
 }

@@ -66,7 +66,7 @@ class AdminAccountControllerTest {
         // Given
 
         // When & Then
-        mvc.perform(get("/amin/members"))
+        mvc.perform(get("/admin/members"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("admin/members"));
